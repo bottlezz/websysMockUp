@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet' href='//netdna.bootstrapcdn.com/bootswatch/3.0.3/spacelab/bootstrap.min.css')
+    script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js")
+  body
+    nav.navbar.navbar-inverse.navbar-static-top(role='navigation')
+      .container-fluid
+        .navbar-header
+          a.navbar-brand(href='#') Web Sys
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a(href='#') File
+    #body.container
+      block content
