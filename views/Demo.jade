@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Demo
+  button()
+  table#datatable_info.dataTable(cellpadding="0" cellspacing="0" border="0" class="display" )
+  .popupDiv(display='none')
+    
+  script.    
+    $.get("/file/asdf",function(file,status){
+      $('#datatable_info').dataTable(file);
+    });
+    function popupForm(){
+
+    }
+    
