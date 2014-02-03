@@ -27,10 +27,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
-app.set('demoFile',{
+/*app.set('demoFile',{
         "sDom": "<'row-fluid'<'span6'T><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
         "aaData": [
-            /* Reduced data set */
+            //Reduced data set 
             [ "Trident", "Internet Explorer 4.0", "Win 95+", 4, "X" ],
             [ "Trident", "Internet Explorer 5.0", "Win 95+", 5, "C" ],
             [ "Trident", "Internet Explorer 5.5", "Win 95+", 5.5, "A" ],
@@ -51,17 +51,39 @@ app.set('demoFile',{
             { "sTitle": "Version", "sClass": "center" },
             { "sTitle": "Grade", "sClass": "center" }
         ]
-    } );
+    } );*/
+var file1={
+    columntitle:['Company','Language','IDE'],
+    data:
+    [
+      {company:'MicroSoft',language:'C#',ide:'Vitural Studio'},
+      {company:'Apple Inc',language:'Objective C', ide:'Xcode'}
+    ]
+};
+var file2=
+{    
+    columntitle:['Company','Language'],
+    data:
+    [
+      {company:'IBM',language:'English'},
+      {company:'Sony',language:'Japanese'}
+    ]
+};
+    
 
+
+app.set('file1',file1);
+app.set('file2',file2);
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/Demo',function(req, res){
     
   res.render('Demo');
 });
-app.get('/file/:filename',function(req,res){
+app.get('/file/:filename?',function(req,res){
     res.setHeader('Content-Type', 'application/json');
-    var file=app.get('demoFile');
+    console.log(req.params.filename);
+    var file=app.get(req.params.filename);
     console.log(file);
     res.end(JSON.stringify(file));
 });

@@ -1,16 +1,98 @@
 extends layout
 
 block content
-  h1 Demo
-  button()
-  table#datatable_info.dataTable(cellpadding="0" cellspacing="0" border="0" class="display" )
-  .popupDiv(display='none')
-    
-  script.    
-    $.get("/file/asdf",function(file,status){
-      $('#datatable_info').dataTable(file);
-    });
-    function popupForm(){
+  .page-header
+    h1 Demo
+  .page-content
+    #FileListBlock.col-xs-12.col-sm-6.col-md-8.panel
+      .panel-heading
+        h2 File List
+        
+        button#NewFileBtn.btn.btn-link New File
+      .panel-body
+        table#FileList.table.table-bordered.table-striped
+          thead
+            th Name
+            th created_At
+          tbody
+      
+    #FileBlock.row.col-xs-12.col-sm-6.col-md-8.panel(style="display:none")
+      .panel-heading
+        h3 filename
+      .panel-body
+        table#Datatable.table.table-striped.table-bordered
+          thead
+            th Company
+            th Language
+            th IDE
+          tbody
+      .input-group
+        button#fileBackBtn.btn.btn-default.btn-sm back
 
-    }
+    #NewFileForm.col-xs-12.col-sm-6.col-md-8.panel(style="display:none")
+      .panel-heading
+        h2 New File
+      .panel-body
+        form(role="form")
+          .form-group
+            label File Name:
+            input#filename.form-control(tpye="text")
+          .form-group
+            button.btn.btn-primary(type="submit") Submit
+
+            button#NewFileBackBtn.btn.btn-default Back
+
+
+    
+  script.
+    var $filelist=[{name:'file1',created_At:'2013-02-02'},{name:'file2',created_At:'2013-02-01'}];
+    (function loadFile(){
+      $('#FileList').dynatable({
+        dataset:{
+          records: $filelist
+        }
+      });
+    })();
+    $("#FileList td").click(function(){
+      var filename=$(this).closest('tr').children('td:first').text().toString();
+      //var command=+filename;
+      $.get("/file/"+filename,function(file,status){
+        $('#FileBlock .panel-body').empty();
+        $('#FileBlock .panel-body').append("<table id='Datatable' class='table table-striped table-bordered'>");
+        $('#Datatable').append("<thead>");
+        $('#Datatable thead').append("<tr>");
+        for(var count in file.columntitle){
+          $('#Datatable thead tr').append("<th>"+file.columntitle[count]+"</th>");
+          console.log(file.columntitle[count]);
+        }
+        if($('#Datatable').data("dynatable")!=undefined)
+          $('#Datatable').data("dynatable",null);
+        $('#Datatable').dynatable({
+          dataset:{
+            records:file.data
+          }
+        });
+        
+       
+        $('#FileBlock').show();
+        $('#FileListBlock').hide();
+        $('h3').text(filename);
+      });
+    });
+    $("#fileBackBtn").click(function(){
+        $('#FileBlock').hide();
+        $('#FileListBlock').show();
+    });
+    $("#NewFileBtn").click(function(){
+      $('#FileListBlock').hide();
+      $('#NewFileForm').show();
+      });
+    $("#NewFileBackBtn").click(function(){
+        $('#NewFileForm').hide();
+        $('#FileListBlock').show();
+      })
+    
+
+    
+    
     
